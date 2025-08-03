@@ -1,3 +1,8 @@
+
+<div align="center">
+    <img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/6b2e5a03-7422-447a-a650-9d2345792edc" />
+</div>
+
 # Etherlink Fusion+ Implementation
 
 ## 🎯 Project Overview
@@ -181,3 +186,7 @@ npm run deploy:mainnet
 3. Monitor Dutch auction progress
 4. Observe atomic settlement
 5. Verify MEV protection
+
+<div align="center">
+    <img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/572d4eaa-c8b9-41e1-beaf-567b2184bd0e" />
+</div>
