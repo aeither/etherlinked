@@ -1,0 +1,58 @@
+{
+  "name": "etherlink-fusion-plus",
+  "version": "1.0.0",
+  "description": "1inch Fusion+ implementation for Etherlink - Cross-chain DeFi bridge with gasless swaps",
+  "scripts": {
+    "install:all": "npm install && cd contracts && npm install && cd ../relayer && npm install && cd ../frontend && npm install",
+    "build:all": "npm run build:contracts && npm run build:relayer && npm run build:frontend",
+    "build:contracts": "cd contracts && npm run compile",
+    "build:relayer": "cd relayer && npm run build", 
+    "build:frontend": "cd frontend && npm run build",
+    "deploy:contracts": "cd contracts && npm run deploy:testnet",
+    "deploy:contracts:mainnet": "cd contracts && npm run deploy:mainnet",
+    "start:relayer": "cd relayer && npm run dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "demo": "concurrently \"npm run start:relayer\" \"npm run start:frontend\"",
+    "test:all": "npm run test:contracts && npm run test:relayer",
+    "test:contracts": "cd contracts && npm test",
+    "test:relayer": "cd relayer && npm test",
+    "test:e2e": "npm run demo && npm run test:integration",
+    "lint": "cd contracts && npm run lint && cd ../relayer && npm run lint && cd ../frontend && npm run lint",
+    "clean": "rm -rf contracts/artifacts contracts/cache relayer/dist frontend/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/etherlink-fusion-plus"
+  },
+  "keywords": [
+    "etherlink",
+    "1inch",
+    "fusion",
+    "cross-chain",
+    "defi",
+    "bridge",
+    "htlc",
+    "dutch-auction",
+    "mev-protection",
+    "gasless",
+    "atomic-swap",
+    "tezos",
+    "ethereum",
+    "hackathon",
+    "ethglobal"
+  ],
+  "author": "Your Team Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "workspaces": [
+    "contracts",
+    "relayer", 
+    "frontend"
+  ]
+}
