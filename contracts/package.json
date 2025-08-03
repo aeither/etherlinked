@@ -8,6 +8,8 @@
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network etherlinkTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.ts --network etherlinkMainnet",
+    "deploy:monad-testnet": "hardhat run scripts/deploy-monad.ts --network monadTestnet",
+    "deploy:monad-mainnet": "hardhat run scripts/deploy-monad.ts --network monadMainnet",
     "verify": "hardhat verify",
     "coverage": "hardhat coverage"
   },

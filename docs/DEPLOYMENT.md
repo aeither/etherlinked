@@ -1,492 +1,237 @@
-# 🚀 Deployment Guide
+# Deployment Guide
 
-## 📋 Prerequisites
+This guide covers deploying the Etherlink Fusion+ implementation to both Etherlink and Monad networks.
 
-### System Requirements
-- Node.js 18.0+
-- npm or yarn
-- Git
-- MetaMask or compatible Web3 wallet
+## Prerequisites
 
-### Required Accounts & Keys
-- Etherlink testnet account with XTZ
-- Ethereum Sepolia account with ETH
-- Private key for contract deployment
-- (Optional) 1inch API key for production
+- Node.js 18+
+- Hardhat
+- MetaMask or compatible wallet
+- Private key with sufficient funds for deployment
 
-## 🏗️ Smart Contract Deployment
+## Environment Setup
 
-### 1. Environment Setup
-
+1. **Copy environment file:**
 ```bash
-# Clone repository
-git clone <repository-url>
-cd etherlink-fusion-plus
-
-# Install dependencies
-npm install
-
-# Setup environment variables
-cp contracts/.env.example contracts/.env
+cp .env.example .env
 ```
 
-### 2. Configure Environment
-
-Edit `contracts/.env`:
+2. **Configure environment variables:**
 ```bash
-PRIVATE_KEY=your_private_key_without_0x_prefix
-ETHERSCAN_API_KEY=your_etherscan_api_key_optional
-VERIFY_CONTRACTS=true
+# Required for deployment
+PRIVATE_KEY=your_private_key_here
+
+# Optional: API keys for contract verification
+ETHERSCAN_API_KEY=your_etherscan_api_key
+ETHERLINK_API_KEY=your_etherlink_api_key
+MONAD_API_KEY=your_monad_api_key
 ```
 
-### 3. Deploy to Etherlink Testnet
+## Network Configuration
 
+### Etherlink Networks
+- **Testnet**: Chain ID 128123, RPC: `https://node.ghostnet.etherlink.com`
+- **Mainnet**: Chain ID 42793, RPC: `https://node.mainnet.etherlink.com`
+
+### Monad Networks
+- **Testnet**: Chain ID 1338, RPC: `https://rpc.testnet.monad.xyz`
+- **Mainnet**: Chain ID 1337, RPC: `https://rpc.monad.xyz`
+
+## Deployment Commands
+
+### Local Development
 ```bash
-cd contracts
+# Start local hardhat node
+npm run node
 
-# Compile contracts
-npm run compile
+# Deploy to local network
+npm run deploy:local
+```
 
+### Etherlink Deployment
+```bash
 # Deploy to Etherlink testnet
 npm run deploy:testnet
 
-# Expected output:
-# ✅ HTLCEtherlinkEscrow deployed to: 0x123...
-# ✅ FusionResolver deployed to: 0x456...
-# ✅ Resolver authorized in escrow contract
+# Deploy to Etherlink mainnet
+npm run deploy:mainnet
 ```
 
-### 4. Deploy to Other Networks (Optional)
-
+### Monad Deployment
 ```bash
-# Deploy to Ethereum Sepolia
-npm run deploy:sepolia
+# Deploy to Monad testnet
+npm run deploy:monad-testnet
 
-# Deploy to Arbitrum testnet
-npm run deploy:arbitrum-testnet
+# Deploy to Monad mainnet
+npm run deploy:monad-mainnet
 ```
 
-### 5. Verify Contracts
+## Contract Verification
 
+After deployment, verify contracts on the respective explorers:
+
+### Etherlink Verification
 ```bash
-# Verify on block explorer
-npm run verify -- --network etherlinkTestnet 0x123... "constructor_args"
+# Verify on Etherlink explorer
+npx hardhat verify --network etherlinkTestnet CONTRACT_ADDRESS
+npx hardhat verify --network etherlinkMainnet CONTRACT_ADDRESS
 ```
 
-## 🔗 Relayer Service Deployment
-
-### 1. Configure Relayer
-
+### Monad Verification
 ```bash
-cd relayer
-
-# Setup environment
-cp .env.example .env
+# Verify on Monad explorer
+npx hardhat verify --network monadTestnet CONTRACT_ADDRESS
+npx hardhat verify --network monadMainnet CONTRACT_ADDRESS
 ```
 
-Edit `relayer/.env`:
-```bash
-PRIVATE_KEY=your_relayer_private_key
-NETWORKS=etherlinkTestnet,sepolia
-ETHERLINK_TESTNET_ESCROW=0x123...
-ETHERLINK_TESTNET_RESOLVER=0x456...
-SEPOLIA_ESCROW=0x789...
-```
+## Deployment Output
 
-### 2. Local Development
+Successful deployment will create:
+- `deployment-etherlink.json` - Etherlink deployment info
+- `deployment-monad.json` - Monad deployment info
 
-```bash
-# Install dependencies
-npm install
-
-# Start relayer in development mode
-npm run dev
-
-# Expected output:
-# 📡 Relayer with viem started...
-# ✅ Escuchando eventos SecretRevealed...
-# 🌐 Server running on http://localhost:3001
-```
-
-### 3. Production Deployment
-
-#### Option A: PM2 (Recommended)
-```bash
-# Install PM2 globally
-npm install -g pm2
-
-# Build relayer
-npm run build
-
-# Start with PM2
-pm2 start dist/index.js --name "etherlink-relayer"
-
-# Save PM2 configuration
-pm2 save
-pm2 startup
-```
-
-#### Option B: Docker
-```bash
-# Build Docker image
-docker build -t etherlink-relayer .
-
-# Run container
-docker run -d \
-  --name etherlink-relayer \
-  --env-file .env \
-  -p 3001:3001 \
-  etherlink-relayer
-```
-
-#### Option C: Cloud Deployment (Heroku/Railway/Render)
-```bash
-# Add buildpacks
-heroku buildpacks:add heroku/nodejs
-
-# Set environment variables
-heroku config:set PRIVATE_KEY=your_key
-heroku config:set NETWORKS=etherlinkTestnet,sepolia
-
-# Deploy
-git push heroku main
-```
-
-### 4. Health Check
-
-```bash
-# Test relayer health
-curl http://localhost:3001/health
-
-# Expected response:
+Example deployment output:
+```json
 {
-  "status": "ok",
-  "timestamp": 1703123456789,
-  "relayer": {
-    "isRunning": true,
-    "networks": ["etherlinkTestnet", "sepolia"],
-    "activeOrders": 0,
-    "pendingSwaps": 0
-  }
+  "network": "monad",
+  "chainId": 1338,
+  "contracts": {
+    "htlcEscrow": "0x...",
+    "fusionResolver": "0x..."
+  },
+  "deployer": "0x...",
+  "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ```
 
-## 🌐 Frontend Deployment
+## Post-Deployment Setup
 
-### 1. Configure Frontend
-
+1. **Authorize Resolver:**
 ```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Setup environment
-cp .env.example .env
+# Set FusionResolver as authorized on HTLC contract
+npx hardhat run scripts/setup-permissions.ts --network <network>
 ```
 
-Edit `frontend/.env`:
-```bash
-VITE_RELAYER_URL=http://localhost:3001
-VITE_ETHERLINK_RPC=https://node.ghostnet.etherlink.com
-VITE_ESCROW_CONTRACT=0x123...
-VITE_RESOLVER_CONTRACT=0x456...
+2. **Configure Relayer:**
+Update relayer configuration with deployed contract addresses:
+```typescript
+// relayer/src/config/contracts.ts
+export const CONTRACT_ADDRESSES = {
+  etherlinkTestnet: {
+    htlcEscrow: "0x...",
+    fusionResolver: "0x..."
+  },
+  monadTestnet: {
+    htlcEscrow: "0x...",
+    fusionResolver: "0x..."
+  }
+};
 ```
 
-### 2. Build Frontend
-
-```bash
-# Build for production
-npm run build
-
-# Preview build locally
-npm run preview
+3. **Update Frontend:**
+Update frontend configuration with deployed addresses:
+```typescript
+// frontend/src/config/contracts.ts
+export const CONTRACT_ADDRESSES = {
+  etherlinkTestnet: {
+    htlcEscrow: "0x...",
+    fusionResolver: "0x..."
+  },
+  monadTestnet: {
+    htlcEscrow: "0x...",
+    fusionResolver: "0x..."
+  }
+};
 ```
 
-### 3. Deploy Options
+## Testing Deployment
 
-#### Option A: Vercel (Recommended)
+### Unit Tests
 ```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy
-vercel --prod
-
-# Set environment variables in Vercel dashboard
+npm run test
 ```
 
-#### Option B: Netlify
+### Integration Tests
 ```bash
-# Install Netlify CLI
-npm install -g netlify-cli
+# Test on Etherlink testnet
+npm run test:etherlink-testnet
 
-# Build and deploy
-npm run build
-netlify deploy --prod --dir=dist
+# Test on Monad testnet
+npm run test:monad-testnet
 ```
 
-#### Option C: Static Hosting
-```bash
-# Upload dist/ folder to:
-# - AWS S3 + CloudFront
-# - GitHub Pages
-# - Firebase Hosting
-# - IPFS
-```
+### Manual Testing
+1. Connect wallet to deployed network
+2. Create test HTLC escrow
+3. Verify cross-chain functionality
+4. Test Dutch auction mechanisms
 
-### 4. Custom Domain (Optional)
-
-```bash
-# Add custom domain in hosting provider
-# Example: etherlink-fusion.vercel.app → fusion.yourdomain.com
-
-# Update CORS settings in relayer
-CORS_ORIGIN=https://fusion.yourdomain.com
-```
-
-## 🔐 Security Configuration
-
-### 1. Private Key Management
-
-**Development**:
-```bash
-# Use test private keys only
-PRIVATE_KEY=0x123...testkey...
-```
-
-**Production**:
-```bash
-# Use environment variables or secret management
-# AWS Secrets Manager, HashiCorp Vault, etc.
-export PRIVATE_KEY=$(aws secretsmanager get-secret-value --secret-id prod/relayer/private-key --query SecretString --output text)
-```
-
-### 2. API Security
-
-```bash
-# Enable CORS restrictions
-CORS_ORIGIN=https://yourdomain.com
-
-# Add rate limiting
-RATE_LIMIT_ENABLED=true
-RATE_LIMIT_MAX=100
-
-# Add authentication (optional)
-API_KEY_REQUIRED=true
-API_KEY=your_secret_api_key
-```
-
-### 3. Network Security
-
-```bash
-# Use WSS for WebSocket connections
-WSS_ENABLED=true
-
-# Enable SSL/TLS
-SSL_ENABLED=true
-SSL_CERT_PATH=/path/to/cert.pem
-SSL_KEY_PATH=/path/to/key.pem
-```
-
-## 📊 Monitoring & Logging
-
-### 1. Application Monitoring
-
-```bash
-# Add monitoring service
-npm install @sentry/node
-
-# Configure in relayer
-SENTRY_DSN=your_sentry_dsn
-LOG_LEVEL=info
-```
-
-### 2. Infrastructure Monitoring
-
-```bash
-# PM2 monitoring
-pm2 monit
-
-# Docker monitoring
-docker stats etherlink-relayer
-
-# System monitoring
-htop
-```
-
-### 3. Logging
-
-```bash
-# Configure log rotation
-npm install winston-daily-rotate-file
-
-# View logs
-tail -f logs/combined.log
-tail -f logs/error.log
-```
-
-## 🧪 Testing Deployment
-
-### 1. Contract Tests
-
-```bash
-cd contracts
-
-# Run unit tests
-npm test
-
-# Run integration tests
-npm run test:integration
-
-# Test gas usage
-npm run test:gas
-```
-
-### 2. Relayer Tests
-
-```bash
-cd relayer
-
-# Test relayer service
-npm test
-
-# Test network connectivity
-npm run test:networks
-
-# Test event monitoring
-npm run test:events
-```
-
-### 3. End-to-End Tests
-
-```bash
-# Test complete swap flow
-npm run test:e2e
-
-# Test error scenarios
-npm run test:recovery
-
-# Load testing
-npm run test:load
-```
-
-## 🔄 Updates & Maintenance
-
-### 1. Contract Upgrades
-
-```bash
-# Deploy new version
-npm run deploy:upgrade
-
-# Verify upgrade
-npm run verify:upgrade
-```
-
-### 2. Relayer Updates
-
-```bash
-# Update dependencies
-npm update
-
-# Restart service
-pm2 restart etherlink-relayer
-
-# Zero-downtime deployment
-pm2 reload etherlink-relayer
-```
-
-### 3. Frontend Updates
-
-```bash
-# Build new version
-npm run build
-
-# Deploy to production
-vercel --prod
-```
-
-## 📈 Scaling Considerations
-
-### 1. High Availability
-
-```bash
-# Deploy multiple relayer instances
-pm2 start ecosystem.config.js
-
-# Load balancer configuration
-# Nginx, HAProxy, or cloud load balancer
-```
-
-### 2. Database Scaling
-
-```bash
-# Add Redis for caching
-REDIS_URL=redis://localhost:6379
-
-# PostgreSQL for transaction history
-DATABASE_URL=postgresql://user:pass@host:5432/db
-```
-
-### 3. Network Optimization
-
-```bash
-# Use dedicated RPC endpoints
-ETHERLINK_RPC=https://premium-etherlink-rpc.com
-ETHEREUM_RPC=https://premium-ethereum-rpc.com
-
-# Enable connection pooling
-RPC_POOL_SIZE=10
-```
-
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-**Contract deployment fails**:
-```bash
-# Check account balance
-# Verify network configuration
-# Increase gas limit
-```
+1. **Insufficient Gas:**
+   - Ensure deployer account has sufficient native tokens
+   - Check gas price settings in hardhat.config.ts
 
-**Relayer not processing events**:
-```bash
-# Check RPC connectivity
-# Verify contract addresses
-# Restart relayer service
-```
+2. **Contract Verification Failed:**
+   - Verify API keys are correct
+   - Check explorer supports contract verification
+   - Ensure contract bytecode matches
 
-**Frontend not connecting**:
-```bash
-# Check CORS settings
-# Verify relayer URL
-# Check MetaMask network
-```
+3. **Network Connection Issues:**
+   - Verify RPC URLs are accessible
+   - Check network chain IDs
+   - Ensure MetaMask is configured correctly
 
 ### Debug Commands
-
 ```bash
-# Check contract state
-npm run debug:contracts
+# Check network connection
+npx hardhat console --network <network>
 
-# Monitor relayer logs
-npm run debug:relayer
+# Get account balance
+npx hardhat run scripts/check-balance.ts --network <network>
 
-# Test network connectivity
-npm run debug:networks
+# Verify contract deployment
+npx hardhat run scripts/verify-deployment.ts --network <network>
 ```
 
----
+## Security Considerations
 
-## 🎉 Deployment Complete!
+1. **Private Key Security:**
+   - Never commit private keys to version control
+   - Use environment variables for sensitive data
+   - Consider using hardware wallets for mainnet
 
-Your Etherlink Fusion+ implementation is now live! 
+2. **Contract Security:**
+   - Audit contracts before mainnet deployment
+   - Test thoroughly on testnets
+   - Use multi-signature wallets for admin functions
 
-**Next Steps**:
-1. Monitor initial transactions
-2. Gather user feedback  
-3. Optimize performance
-4. Plan mainnet deployment
+3. **Network Security:**
+   - Verify RPC endpoints are official
+   - Use HTTPS connections
+   - Monitor for suspicious activity
 
-**Support**: For deployment issues, check the troubleshooting section or contact the development team.
+## Monitoring
+
+### Contract Events
+Monitor these events for operational health:
+- `FusionEscrowCreated`
+- `FusionEscrowWithdrawn`
+- `FusionEscrowCancelled`
+- `DutchAuctionUpdate`
+
+### Network Metrics
+- Transaction success rate
+- Gas usage patterns
+- Cross-chain swap completion rates
+- Dutch auction performance
+
+## Support
+
+For deployment issues:
+1. Check network status pages
+2. Review contract documentation
+3. Test on testnets first
+4. Contact network support teams

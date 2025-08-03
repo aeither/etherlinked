@@ -31,6 +31,18 @@ const config: HardhatUserConfig = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       gasPrice: 1000000000, // 1 gwei
     },
+    monadTestnet: {
+      url: "https://rpc.testnet.monad.xyz",
+      chainId: 1338, // Monad testnet chain ID
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      gasPrice: 1000000000, // 1 gwei
+    },
+    monadMainnet: {
+      url: "https://rpc.monad.xyz",
+      chainId: 1337, // Monad mainnet chain ID
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      gasPrice: 1000000000, // 1 gwei
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -39,7 +51,9 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       etherlinkTestnet: "abc", // Placeholder - Etherlink may not have etherscan yet
-      etherlinkMainnet: "abc"
+      etherlinkMainnet: "abc",
+      monadTestnet: "abc", // Placeholder - Monad may not have etherscan yet
+      monadMainnet: "abc"
     },
     customChains: [
       {
@@ -56,6 +70,22 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://explorer.etherlink.com/api",
           browserURL: "https://explorer.etherlink.com"
+        }
+      },
+      {
+        network: "monadTestnet",
+        chainId: 1338,
+        urls: {
+          apiURL: "https://explorer.testnet.monad.xyz/api",
+          browserURL: "https://explorer.testnet.monad.xyz"
+        }
+      },
+      {
+        network: "monadMainnet",
+        chainId: 1337,
+        urls: {
+          apiURL: "https://explorer.monad.xyz/api",
+          browserURL: "https://explorer.monad.xyz"
         }
       }
     ]

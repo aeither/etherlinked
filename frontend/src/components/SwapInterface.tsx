@@ -34,7 +34,8 @@ const SwapInterface: React.FC = () => {
   // Set default networks on mount
   useEffect(() => {
     if (!fromChain) {
-      setFromChain(SUPPORTED_NETWORKS.etherlinkTestnet);
+      // Default to Monad testnet for from chain
+      setFromChain(SUPPORTED_NETWORKS.monadTestnet);
     }
     if (!toChain) {
       setToChain(SUPPORTED_NETWORKS.ethereum);
