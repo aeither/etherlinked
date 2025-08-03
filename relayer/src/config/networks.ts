@@ -1,91 +1,109 @@
-import { Network } from '../types';
+import { Network, NetworkConfig } from '../types';
 
 export const SUPPORTED_NETWORKS: Record<string, Network> = {
   etherlinkMainnet: {
-    id: 42793,
     name: 'Etherlink',
-    symbol: 'XTZ',
+    chainId: 42793,
     rpcUrl: 'https://node.mainnet.etherlink.com',
-    explorer: 'https://explorer.etherlink.com',
-    logo: '/images/etherlink-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'Tezos',
+      symbol: 'XTZ',
+      decimals: 18
+    },
+    blockExplorer: 'https://explorer.etherlink.com'
   },
   etherlinkTestnet: {
-    id: 128123,
     name: 'Etherlink Testnet',
-    symbol: 'XTZ',
+    chainId: 128123,
     rpcUrl: 'https://node.ghostnet.etherlink.com',
-    explorer: 'https://explorer.ghostnet.etherlink.com',
-    logo: '/images/etherlink-logo.svg',
-    isTestnet: true
+    nativeCurrency: {
+      name: 'Tezos',
+      symbol: 'XTZ',
+      decimals: 18
+    },
+    blockExplorer: 'https://explorer.ghostnet.etherlink.com'
   },
   monadMainnet: {
-    id: 1337,
     name: 'Monad',
-    symbol: 'MONAD',
+    chainId: 1337,
     rpcUrl: 'https://rpc.monad.xyz',
-    explorer: 'https://explorer.monad.xyz',
-    logo: '/images/monad-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'Monad',
+      symbol: 'MONAD',
+      decimals: 18
+    },
+    blockExplorer: 'https://explorer.monad.xyz'
   },
   monadTestnet: {
-    id: 1338,
     name: 'Monad Testnet',
-    symbol: 'MONAD',
+    chainId: 1338,
     rpcUrl: 'https://rpc.testnet.monad.xyz',
-    explorer: 'https://explorer.testnet.monad.xyz',
-    logo: '/images/monad-logo.svg',
-    isTestnet: true
+    nativeCurrency: {
+      name: 'Monad',
+      symbol: 'MONAD',
+      decimals: 18
+    },
+    blockExplorer: 'https://explorer.testnet.monad.xyz'
   },
   ethereum: {
-    id: 1,
     name: 'Ethereum',
-    symbol: 'ETH',
+    chainId: 1,
     rpcUrl: 'https://eth.llamarpc.com',
-    explorer: 'https://etherscan.io',
-    logo: '/images/ethereum-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorer: 'https://etherscan.io'
   },
   arbitrum: {
-    id: 42161,
     name: 'Arbitrum',
-    symbol: 'ETH',
+    chainId: 42161,
     rpcUrl: 'https://arb1.arbitrum.io/rpc',
-    explorer: 'https://arbiscan.io',
-    logo: '/images/arbitrum-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorer: 'https://arbiscan.io'
   },
   optimism: {
-    id: 10,
     name: 'Optimism',
-    symbol: 'ETH',
+    chainId: 10,
     rpcUrl: 'https://mainnet.optimism.io',
-    explorer: 'https://optimistic.etherscan.io',
-    logo: '/images/optimism-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorer: 'https://optimistic.etherscan.io'
   },
   polygon: {
-    id: 137,
     name: 'Polygon',
-    symbol: 'MATIC',
+    chainId: 137,
     rpcUrl: 'https://polygon-rpc.com',
-    explorer: 'https://polygonscan.com',
-    logo: '/images/polygon-logo.svg',
-    isTestnet: false
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    blockExplorer: 'https://polygonscan.com'
   },
   sepolia: {
-    id: 11155111,
     name: 'Sepolia',
-    symbol: 'ETH',
+    chainId: 11155111,
     rpcUrl: 'https://rpc.sepolia.org',
-    explorer: 'https://sepolia.etherscan.io',
-    logo: '/images/ethereum-logo.svg',
-    isTestnet: true
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorer: 'https://sepolia.etherscan.io'
   }
 };
 
 export const getNetworkById = (chainId: number): Network | undefined => {
-  return Object.values(SUPPORTED_NETWORKS).find(network => network.id === chainId);
+  return Object.values(SUPPORTED_NETWORKS).find(network => network.chainId === chainId);
 };
 
 export const getNetworkByName = (name: string): Network | undefined => {

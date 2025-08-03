@@ -191,7 +191,7 @@ async function main(): Promise<void> {
     });
 
     // Initialize relayer service
-    relayerService = new RelayerService(NETWORKS, PRIVATE_KEY, FUSION_API_KEY);
+    relayerService = new RelayerService(NETWORKS, PRIVATE_KEY || '', FUSION_API_KEY);
 
     // Setup Express app
     const app = setupExpressServer();

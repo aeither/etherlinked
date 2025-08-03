@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
-import { logger } from '../utils/logger';
+import { Logger } from '../utils/logger';
 import { SUPPORTED_NETWORKS } from '../config/networks';
+
+const logger = new Logger('MonadService');
 
 export class MonadService {
   private provider: ethers.JsonRpcProvider;
@@ -88,11 +90,14 @@ export class MonadService {
       const receipt = await this.provider.waitForTransaction(hash, confirmations);
       logger.info(`Monad transaction confirmed: ${hash}`);
       
+      if (!receipt) {
+        throw new Error('Transaction receipt not found');
+      }
+      
       return {
         hash: receipt.hash,
         blockNumber: receipt.blockNumber,
         gasUsed: receipt.gasUsed?.toString(),
-        effectiveGasPrice: receipt.effectiveGasPrice?.toString(),
         status: receipt.status
       };
     } catch (error) {
@@ -155,6 +160,11 @@ export class MonadService {
   async getBlock(blockNumber: number) {
     try {
       const block = await this.provider.getBlock(blockNumber);
+      
+      if (!block) {
+        throw new Error('Block not found');
+      }
+      
       return {
         number: block.number,
         hash: block.hash,
