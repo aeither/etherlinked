@@ -16,7 +16,6 @@ const SwapInterface: React.FC = () => {
     fromAmount,
     toAmount,
     isLoading,
-    quote,
     error,
     setFromAmount,
     setFromChain,
@@ -24,7 +23,6 @@ const SwapInterface: React.FC = () => {
     swapTokens,
     setLoading,
     setError,
-    setQuote,
     activeOrders,
     addOrder
   } = useSwapStore();
