@@ -19,6 +19,24 @@ export const SUPPORTED_NETWORKS: Record<string, Network> = {
     logo: '/images/etherlink-logo.svg',
     isTestnet: true
   },
+  monadMainnet: {
+    id: 1337, // Monad mainnet chain ID
+    name: 'Monad',
+    symbol: 'MONAD',
+    rpcUrl: 'https://rpc.monad.xyz',
+    explorer: 'https://explorer.monad.xyz',
+    logo: '/images/monad-logo.svg',
+    isTestnet: false
+  },
+  monadTestnet: {
+    id: 1338, // Monad testnet chain ID
+    name: 'Monad Testnet',
+    symbol: 'MONAD',
+    rpcUrl: 'https://rpc.testnet.monad.xyz',
+    explorer: 'https://explorer.testnet.monad.xyz',
+    logo: '/images/monad-logo.svg',
+    isTestnet: true
+  },
   ethereum: {
     id: 1,
     name: 'Ethereum',
@@ -88,6 +106,27 @@ export const DEFAULT_TOKENS = {
       logoUri: '/images/tezos-logo.svg'
     }
   ],
+  // Monad tokens
+  1337: [
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'MONAD',
+      name: 'Monad',
+      decimals: 18,
+      chainId: 1337,
+      logoUri: '/images/monad-logo.svg'
+    }
+  ],
+  1338: [
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'MONAD',
+      name: 'Monad',
+      decimals: 18,
+      chainId: 1338,
+      logoUri: '/images/monad-logo.svg'
+    }
+  ],
   // Ethereum tokens
   1: [
     {
@@ -99,7 +138,7 @@ export const DEFAULT_TOKENS = {
       logoUri: '/images/ethereum-logo.svg'
     },
     {
-      address: '0xA0b86a33E6441d07B8dB3C3512Bbc6C8cE3C9D26',
+      address: '0xA0b86a33E6441b8c4C8C3C8C3C8C3C8C3C8C3C8C',
       symbol: 'USDC',
       name: 'USD Coin',
       decimals: 6,
@@ -107,12 +146,12 @@ export const DEFAULT_TOKENS = {
       logoUri: '/images/usdc-logo.svg'
     },
     {
-      address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-      symbol: 'USDT',
-      name: 'Tether USD',
-      decimals: 6,
+      address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+      symbol: 'DAI',
+      name: 'Dai Stablecoin',
+      decimals: 18,
       chainId: 1,
-      logoUri: '/images/usdt-logo.svg'
+      logoUri: '/images/dai-logo.svg'
     }
   ],
   // Arbitrum tokens
@@ -126,7 +165,7 @@ export const DEFAULT_TOKENS = {
       logoUri: '/images/ethereum-logo.svg'
     },
     {
-      address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+      address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
       symbol: 'USDC',
       name: 'USD Coin',
       decimals: 6,
@@ -134,7 +173,55 @@ export const DEFAULT_TOKENS = {
       logoUri: '/images/usdc-logo.svg'
     }
   ],
-  // Add more tokens as needed
+  // Optimism tokens
+  10: [
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'ETH',
+      name: 'Ethereum',
+      decimals: 18,
+      chainId: 10,
+      logoUri: '/images/ethereum-logo.svg'
+    },
+    {
+      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+      symbol: 'USDC',
+      name: 'USD Coin',
+      decimals: 6,
+      chainId: 10,
+      logoUri: '/images/usdc-logo.svg'
+    }
+  ],
+  // Polygon tokens
+  137: [
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'MATIC',
+      name: 'Polygon',
+      decimals: 18,
+      chainId: 137,
+      logoUri: '/images/polygon-logo.svg'
+    },
+    {
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      symbol: 'USDC',
+      name: 'USD Coin',
+      decimals: 6,
+      chainId: 137,
+      logoUri: '/images/usdc-logo.svg'
+    }
+  ],
+  // Sepolia testnet
+  11155111: [
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'ETH',
+      name: 'Ethereum',
+      decimals: 18,
+      chainId: 11155111,
+      logoUri: '/images/ethereum-logo.svg'
+    }
+  ]
 };
 
 export const getNetworkById = (chainId: number): Network | undefined => {
@@ -142,5 +229,5 @@ export const getNetworkById = (chainId: number): Network | undefined => {
 };
 
 export const getTokensByChainId = (chainId: number) => {
-  return DEFAULT_TOKENS[chainId as keyof typeof DEFAULT_TOKENS] || [];
+  return DEFAULT_TOKENS[chainId] || [];
 };

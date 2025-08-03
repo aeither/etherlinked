@@ -4,8 +4,9 @@
 
 import { EventEmitter } from 'events';
 import { EtherlinkService } from './EtherlinkService';
+import { MonadService } from './MonadService';
 import { FusionService } from './FusionService';
-import { NetworkConfig, getNetworkConfig, isEtherlinkNetwork } from '../config/networks';
+import { SUPPORTED_NETWORKS } from '../config/networks';
 import { 
   FusionOrder, 
   CrossChainSwap, 
@@ -20,7 +21,7 @@ import { Logger } from '../utils/logger';
 
 export class RelayerService extends EventEmitter {
   private logger: Logger;
-  private networkServices: Map<string, EtherlinkService> = new Map();
+  private networkServices: Map<string, EtherlinkService | MonadService> = new Map();
   private fusionService: FusionService;
   private pendingSwaps: Map<string, CrossChainSwap> = new Map();
   private activeOrders: Map<string, FusionOrder> = new Map();
@@ -55,14 +56,22 @@ export class RelayerService extends EventEmitter {
   private initializeNetworkServices(networks: string[], privateKey: string): void {
     for (const network of networks) {
       try {
-        const config = getNetworkConfig(network);
+        const networkConfig = SUPPORTED_NETWORKS[network];
+        if (!networkConfig) {
+          this.logger.error(`Unsupported network: ${network}`);
+          continue;
+        }
         
-        if (isEtherlinkNetwork(network)) {
-          const service = new EtherlinkService(config, privateKey, this.logger);
+        if (network.startsWith('etherlink')) {
+          const service = new EtherlinkService(networkConfig, privateKey, this.logger);
+          this.networkServices.set(network, service);
+          this.logger.info(`Initialized ${network} service`);
+        } else if (network.startsWith('monad')) {
+          const service = new MonadService(network, privateKey);
           this.networkServices.set(network, service);
           this.logger.info(`Initialized ${network} service`);
         } else {
-          // For non-Etherlink networks, we'll use a generic EVM service
+          // For other EVM networks, we'll use a generic EVM service
           // This could be extended to support other chain types
           this.logger.warn(`Generic EVM service not implemented for ${network}`);
         }
