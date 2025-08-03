@@ -1,3 +1,8 @@
+<div align="center">
+    <img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/572d4eaa-c8b9-41e1-beaf-567b2184bd0e" />
+</div>
+
+
 # Etherlink Fusion+ Implementation
 
 ## 🎯 Project Overview
