@@ -4,12 +4,6 @@
 
 This project implements 1inch Fusion+ protocol support for Etherlink, enabling gasless cross-chain swaps with MEV protection through Etherlink's high-performance EVM-compatible Layer 2.
 
-### 🏆 ETHGlobal Unite - Etherlink Track Submission
-
-**Track**: Hack the Stack: Bring Fusion+ to Etherlink ($10,000 prize pool)
-
-**Goal**: Build a prototype that integrates Etherlink with the 1inch Fusion+ protocol, enabling token swaps via 1inch routed through Etherlink's Layer 2 network.
-
 ## 🔧 Architecture
 
 ### Architecture Overview
@@ -187,40 +181,3 @@ npm run deploy:mainnet
 3. Monitor Dutch auction progress
 4. Observe atomic settlement
 5. Verify MEV protection
-
-### Performance Metrics
-- Swap confirmation time: <5 seconds
-- Gas cost: ~$0.001
-- MEV protection: 100%
-- Decentralization: Fully decentralized
-
-## 🏅 Competition Criteria
-
-✅ **Deploy on Etherlink**: Uses Solidity smart contracts on Etherlink  
-✅ **1inch Fusion+ Integration**: Implements core Fusion+ protocol  
-✅ **Clear Documentation**: Comprehensive README and docs  
-✅ **Working Demo**: End-to-end functional prototype  
-✅ **Technical Depth**: Advanced HTLC and relayer implementation  
-✅ **Practical Utility**: Real-world applicable cross-chain swaps  
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Implement changes
-4. Add tests
-5. Submit pull request
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
-## 🔗 Links
-
-- [Etherlink Documentation](https://docs.etherlink.com/)
-- [1inch Fusion+ Whitepaper](https://blog.1inch.io/1inch-releases-a-white-paper-for-cross-chain-innovation/)
-- [ETHGlobal Unite](https://ethglobal.com/events/unite)
-
----
-
-**Built with ❤️ for ETHGlobal Unite 2025**
